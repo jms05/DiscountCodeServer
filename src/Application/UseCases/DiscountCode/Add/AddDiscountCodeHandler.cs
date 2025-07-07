@@ -24,8 +24,9 @@ public sealed class AddDiscountCodeHandler : IRequestHandler<AddDiscountCodeComm
     }
     public async Task<AddDiscountCodeResponse?> Handle(AddDiscountCodeCommand request, CancellationToken cancellationToken)
     {
+        // This logic can also be executed with Queue to process one request at a time, or hope for the best and retry if we got a DB fail due a repeated code inseted between the check and save (it would be faster since we would not be waiting for one request to be completed)
         var allCodes = new HashSet<string>();
-        var codesToGenerate = (int)request.Count;
+        var codesToGenerate = request.Count;
         _logger.Log($"Waiting For Semaphore for {request.Count}");
         await _semaphore.WaitAsync(cancellationToken);
         try
@@ -45,7 +46,7 @@ public sealed class AddDiscountCodeHandler : IRequestHandler<AddDiscountCodeComm
                 foreach (var code in unique)
                     allCodes.Add(code);
 
-                codesToGenerate = (int)request.Count - allCodes.Count;
+                codesToGenerate = request.Count - allCodes.Count;
             }
 
             var allDiscountCodes = allCodes.Select(c => new DiscountCode(c));

@@ -15,8 +15,6 @@ public sealed class EditDiscountCodeHandler : IRequestHandler<EditDiscountCodeCo
     }
     public async Task<EditDiscountCodeResponse?> Handle(EditDiscountCodeCommand request, CancellationToken cancellationToken)
     {
-        // TODO this logic can also be executed with a SemaphoreSlim or a Queue to process onle request at a time, multiple useres as it stands can successfully register the Code
-
         var discountCode = await _getDiscountCode.ExecuteAsync(request.Code, true, cancellationToken);
 
         if (discountCode is null)

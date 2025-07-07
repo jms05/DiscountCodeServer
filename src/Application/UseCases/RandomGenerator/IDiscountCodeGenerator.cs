@@ -28,7 +28,7 @@ public class DiscountCodeGenerator : IDiscountCodeGenerator
 
         while (results.Count < count)
         {
-            var code = new string(Enumerable.Range(0, (int)length)
+            var code = new string(Enumerable.Range(0, length)
                 .Select(_ => DiscountCode.AllowedChars[Random.Next(DiscountCode.AllowedChars.Length)])
                 .ToArray());
 

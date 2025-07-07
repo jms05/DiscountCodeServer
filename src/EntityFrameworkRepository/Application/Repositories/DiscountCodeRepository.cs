@@ -43,8 +43,18 @@ namespace EntityFrameworkRepository.Application.Repositories
 
         async Task<bool> IUpdateDiscountCode.ExecuteAsync(DiscountCode discountCode, CancellationToken cancellationToken)
         {
-            DbSet.Update(discountCode);
-            return await _dbContext.SaveChangesAsync(cancellationToken) == 1;
+
+            try
+            {
+                DbSet.Update(discountCode);
+                var changes = await _dbContext.SaveChangesAsync(cancellationToken);
+                return changes == 1;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                _logger.Log("Concurrency conflict occurred while updating discount code.");
+                return false;
+            }
         }
 
         async Task<DiscountCode?> IGetDiscountCode.ExecuteAsync(string discountCode, bool trackCkanges, CancellationToken cancellationToken)

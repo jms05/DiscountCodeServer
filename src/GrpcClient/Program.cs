@@ -10,7 +10,7 @@ Console.WriteLine("gRPC client- Discount Code Service\n");
 
 while (true)
 {
-    Console.WriteLine("Escolha uma opção:");
+    Console.WriteLine("Options:");
     Console.WriteLine("1. Add codes");
     Console.WriteLine("2. List codes");
     Console.WriteLine("3. Use codes");

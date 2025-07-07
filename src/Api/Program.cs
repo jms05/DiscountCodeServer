@@ -25,7 +25,7 @@ var clientDbOptions = builder.Configuration
         DatabaseName = "jms-local",
         User = "postgres",
         Password = "postgres",
-        LogSensitiveData = true
+        LogSensitiveData = false
     };
 
 clientDbOptions.Migrate();

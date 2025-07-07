@@ -6,12 +6,15 @@ namespace JMS.Plugins.EntityFramework;
 
 public sealed class DatabaseOptions : IDatabaseOptions
 {
+    private static readonly int _timeoutSeconds = 120;
     public string? Host { get; set; }
     public string Port { get; set; } = "5432";
     public string? DatabaseName { get; set; }
     public string? User { get; set; }
     public string? Password { get; set; }
     public bool LogSensitiveData { get; set; } = false;
+    public int MaxPoolSize { get; set; } = 200;
+    public int TimeoutSeconds { get; set; } = _timeoutSeconds;
 
     /// <summary>
     /// Provides the action to be used with DbContextOptionsBuilder
@@ -24,6 +27,8 @@ public sealed class DatabaseOptions : IDatabaseOptions
             pgOptions.MigrationsHistoryTable(
                 ApplicationDbContext.MigrationsHistoryTableName,
                 ApplicationDbContext.SchemaName);
+
+            pgOptions.CommandTimeout(_timeoutSeconds);
         }
 
         optionsBuilder.UseNpgsql(BuildConnectionString(), npgsqlOptionsAction);
@@ -72,6 +77,6 @@ public sealed class DatabaseOptions : IDatabaseOptions
             throw new ArgumentNullException(nameof(Password));
         }
 
-        return $"Server={Host};Port={Port};Database={DatabaseName};User Id={User};Password={Password}";
+        return $"Server={Host};Port={Port};Database={DatabaseName};User Id={User};Password={Password};MaxPoolSize={MaxPoolSize};Timeout={TimeoutSeconds};";
     }
 }

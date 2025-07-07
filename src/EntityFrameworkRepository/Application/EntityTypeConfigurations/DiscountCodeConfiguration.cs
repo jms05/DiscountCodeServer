@@ -12,6 +12,8 @@ internal sealed class DiscountCodeConfiguration : EntityConfigurationBase<Discou
             .IsUnique();
         builder.Property(x => x.Code)
             .HasMaxLength(8);
+        builder.Property(x => x.UpdatedDate)
+            .IsConcurrencyToken();
 
         base.Configure(builder);
     }
