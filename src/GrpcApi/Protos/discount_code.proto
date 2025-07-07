@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+option csharp_namespace = "JMS.GrpcApi";
+
+package discountcodes;
+
+service DiscountCodeService {
+  rpc AddDiscountCodes (AddDiscountCodesRequest) returns (AddDiscountCodesResponse);
+  rpc ListDiscountCodes (ListDiscountCodesRequest) returns (ListDiscountCodesResponse);
+  rpc UpdateDiscountCode (UpdateDiscountCodeRequest) returns (UpdateDiscountCodeResponse);
+}
+
+message AddDiscountCodesRequest {
+  int32 count = 1;
+  int32 length = 2;
+}
+message AddDiscountCodesResponse {
+  bool success = 1;
+}
+
+message ListDiscountCodesRequest {
+  repeated string filter = 1;
+}
+message ListDiscountCodesResponse {
+  repeated DiscountCode codes = 1;
+}
+
+
+
+message UpdateDiscountCodeRequest {
+  string code = 1;
+}
+message UpdateDiscountCodeResponse {
+  bytes code = 1;
+}
+
+message DiscountCode {
+  string code = 1;
+  bool used = 2;
+}
